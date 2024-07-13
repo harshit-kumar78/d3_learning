@@ -4,7 +4,7 @@ import * as d3 from 'd3';
 
 function App() {
 
-  const [data, setData] = useState([{ color: "red", value: 10 }, { color: "blue", value: 30 }, { color: "green", value: 50 }, { color: "yellow", value: 70 }, { color: "purple", value: 80 }]);
+  const [data, setData] = useState([{ color: "red", value: 10, name: "name0" }, { color: "blue", value: 30, name: "name1" }, { color: "green", value: 50, name: "name2" }, { color: "yellow", value: 70, name: "name3" }, { color: "purple", value: 80, name: "name4" }]);
 
   const svgRef = useRef();
 
@@ -35,8 +35,42 @@ function App() {
       .attr('height', (d, i) => d.value)
       .attr('fill', (d, i) => d.color)
       .attr('width', svgWidth)
-      .attr('stroke', 'black')
+      .attr('stroke', () => {
+        return data[Math.floor(Math.random() * data.length)].color;
+      })
       .attr('stroke-width', 2)
+
+
+    //drawing x axis
+
+    svg.append('line')
+      .attr('x1', margin.left)
+      .attr('y1', margin.top + svgHeight)
+      .attr('x2', svgWidth * data.length + margin.left + 30)
+      .attr('y2', margin.top + svgHeight)
+      .attr('stroke', 'orange')
+      .attr('stroke-width', 2)
+
+    svg.append('line')
+      .attr('x1', margin.left)
+      .attr('y1', margin.top)
+      .attr('x2', margin.left)
+      .attr('y2', svgHeight + margin.top)
+      .attr('stroke', 'orange')
+      .attr('stroke-width', 2)
+
+    //labelling x-axis
+
+    svg.selectAll('.label')
+      .data(data)
+      .enter()
+      .append('text')
+      .text(d => d.name)
+      .attr('class', 'label')
+      .attr('x', (d, i) => i * svgWidth + margin.left + 10)
+      .attr('y', (d, i) => margin.top + svgHeight)
+      .attr('transform', (d, i) => `rotate(90 ${i * svgWidth + margin.left + 10} ${margin.top + svgHeight + 20})`)
+      .attr('fill', 'grey')
 
 
 
