@@ -61,16 +61,52 @@ function App() {
 
     //labelling x-axis
 
-    svg.selectAll('.label')
+    svg.selectAll('.name-label')
       .data(data)
       .enter()
       .append('text')
       .text(d => d.name)
-      .attr('class', 'label')
+      .attr('class', 'name-label')
       .attr('x', (d, i) => i * svgWidth + margin.left + 10)
       .attr('y', (d, i) => margin.top + svgHeight)
       .attr('transform', (d, i) => `rotate(90 ${i * svgWidth + margin.left + 10} ${margin.top + svgHeight + 20})`)
       .attr('fill', 'grey')
+      .attr('font-size', '10px')
+
+
+    //labelling y-axis(age/value)
+    svg.selectAll('.age-label')
+      .data(data)
+      .enter()
+      .append('text')
+      .text((d) => d.value)
+      .attr('class', 'age-label')
+      .attr('x', (d, i) => margin.left + svgWidth * i + svgWidth / 2)
+      .attr('y', (d, i) => margin.top + svgHeight - d.value - 5)
+      .attr('text-anchor', 'middle')
+      .attr('fill', 'red')
+      .attr('font-size', '10px')
+
+
+    //creating y axis labels
+
+    const yLabelSpacing = 20;
+    const yLabels = d3.range(0, maxValue + yLabelSpacing * 2, yLabelSpacing);
+
+    svg.selectAll('y-label')
+      .data(yLabels)
+      .enter()
+      .append('text')
+      .text((d) => d)
+      .attr('class', 'y-label')
+      .attr('x', (d, i) => margin.left - 5)
+      .attr('y', (d, i) => margin.top + svgHeight - d)
+      .attr('font-size', '10px')
+      .attr('fill', 'grey')
+      .attr('text-anchor', 'end') // push the text to the end
+      .attr('fill', 'pink')
+      .attr('alignment-baseline', 'middle')
+
 
 
 
