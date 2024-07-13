@@ -8,8 +8,16 @@ function App() {
 
   const svgRef = useRef();
 
-  const svgHeight = 100;
+
+  const maxValue = d3.max(data, (d) => d.value);
+  const svgHeight = maxValue + 30; //extra padding 50 added
   const svgWidth = 50;
+  const margin = {
+    top: 20,
+    right: 90,
+    bottom: 100,
+    left: 40
+  }
 
 
   useEffect(() => {
@@ -18,12 +26,12 @@ function App() {
     //selecting all rect
     const allRect = svg.selectAll('rect');
 
-    const maxValue = d3.max(data, (d) => d.value);
     //binding data and creating dom elements with data
     //creating the bar graph
+
     allRect.data(data).enter().append('rect')
-      .attr('x', (d, i) => i * svgWidth)
-      .attr('y', (d, i) => svgHeight - d.value)
+      .attr('x', (d, i) => i * svgWidth + margin.left) //40 90 140 190 240
+      .attr('y', (d, i) => svgHeight - d.value + margin.top)  // 120
       .attr('height', (d, i) => d.value)
       .attr('fill', (d, i) => d.color)
       .attr('width', svgWidth)
@@ -38,7 +46,7 @@ function App() {
 
   return (
     <>
-      <svg ref={svgRef} height={svgHeight} width={svgWidth * data.length} style={{ border: "1px solid red" }}>
+      <svg ref={svgRef} height={svgHeight + margin.top + margin.bottom} style={{ border: "1px solid red" }}>
         {/* <rect></rect>
         <rect></rect>
         <rect></rect>
