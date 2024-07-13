@@ -35,10 +35,29 @@ function App() {
       .attr('height', (d, i) => d.value)
       .attr('fill', (d, i) => d.color)
       .attr('width', svgWidth)
-      .attr('stroke', 'black')
+      .attr('stroke', () => {
+        return data[Math.floor(Math.random() * data.length)].color;
+      })
       .attr('stroke-width', 2)
 
 
+    //drawing x axis
+
+    svg.append('line')
+      .attr('x1', margin.left)
+      .attr('y1', margin.top + svgHeight)
+      .attr('x2', svgWidth * data.length + margin.left + 30)
+      .attr('y2', margin.top + svgHeight)
+      .attr('stroke', 'orange')
+      .attr('stroke-width', 2)
+
+    svg.append('line')
+      .attr('x1', margin.left)
+      .attr('y1', margin.top)
+      .attr('x2', margin.left)
+      .attr('y2', svgHeight + margin.top)
+      .attr('stroke', 'orange')
+      .attr('stroke-width', 2)
 
   }, [])
 
